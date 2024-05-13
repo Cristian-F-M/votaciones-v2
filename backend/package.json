@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "py run.py",
+    "dev": "flask run --debug --host=0.0.0.0 --port=8080",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
