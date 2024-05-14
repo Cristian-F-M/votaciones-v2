@@ -7,7 +7,6 @@ from app.utils.form_fields import (
     response_integrity_error,
 )
 from app.models.User import User
-from app.models.Role import Role
 from app import db, bcrypt
 import uuid
 from sqlalchemy.exc import IntegrityError
