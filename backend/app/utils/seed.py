@@ -6,19 +6,19 @@ import uuid
 types_document = {
     "model": Type_document,
     "data": [
-        Type_document(id=uuid.uuid4(), name="Cédula de ciudadanía"),
-        Type_document(id=uuid.uuid4(), name="Tarjeta de identidad"),
-        Type_document(id=uuid.uuid4(), name="Cédula de extranjería"),
-        Type_document(id=uuid.uuid4(), name="Pasaporte"),
+        Type_document(id=1, name="Cédula de ciudadanía"),
+        Type_document(id=2, name="Tarjeta de identidad"),
+        Type_document(id=3, name="Cédula de extranjería"),
+        Type_document(id=4, name="Pasaporte"),
     ],
 }
 
 roles = {
     "model": Role,
     "data": [
-        Role(id=uuid.uuid4(), name="User"),
-        Role(id=uuid.uuid4(), name="Admin"),
-        Role(id=uuid.uuid4(), name="Candidate"),
+        Role(id=1, name="User"),
+        Role(id=2, name="Admin"),
+        Role(id=3, name="Candidate"),
     ],
 }
 
