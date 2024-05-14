@@ -16,5 +16,5 @@ class User(db.Model):
 
 
 
-    Type_document = db.relationship("Type_document", backref="users")
-    Role = db.relationship("Role", backref="users")
+    Type_document = db.relationship("Type_document")
+    Role = db.relationship("Role")
