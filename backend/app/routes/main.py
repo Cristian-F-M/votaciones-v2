@@ -7,10 +7,19 @@ from app.models.User import User
 bp = Blueprint("main", __name__)
 
 
+@bp.after_request
+def middlware_after(response):
+    origin = request.origin
+    method = request.method
 
-@bp.before_request
-def before_request():
-    middlware_after_request(request)
+    if method in ACCEPTED_METHODS:
+        response.headers["Access-Control-Allow-Methods"] = method
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+
+    if origin in ACCEPTED_ORIGINS or not origin:
+        response.headers["Access-Control-Allow-Origin"] = origin
+    return response
+
 
 @bp.route("/test", methods=["GET"])
 def test():
