@@ -23,8 +23,8 @@ def middlware_after(response):
 
 @bp.route("/test", methods=["GET"])
 def test():
-    data = json_response({ "res": "All ok" })
-    response = Response(data, status=200, mimetype='application/json')
+    data = json_response({"res": "All ok"})
+    response = Response(data, status=200, mimetype="application/json")
     return response
 
 
