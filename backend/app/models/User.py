@@ -9,7 +9,7 @@ class User(db.Model):
     email = db.Column(db.String(50), nullable=False, unique=True)
     type_document = db.Column(db.String(100), db.ForeignKey("types_document.id"), nullable=False)
     document = db.Column(db.String(50), nullable=False, unique=True)
-    phone = db.Column(db.String(50), nullable=False)
+    phone = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.VARBINARY(256), nullable=False)
     role = db.Column(db.String(100), db.ForeignKey("roles.id"))
     vote = db.Column(db.String(100), db.ForeignKey("candidates.id"))
