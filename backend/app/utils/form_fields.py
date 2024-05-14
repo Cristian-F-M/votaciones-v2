@@ -1,5 +1,4 @@
 import re
-from app.utils.http import json_response
 
 user_fields_validations = {
     "name": {
