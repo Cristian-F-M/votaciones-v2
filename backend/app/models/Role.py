@@ -6,4 +6,3 @@ class Role(db.Model):
     id = db.Column(db.String(100), primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(50))
-    users = db.relationship('User')
