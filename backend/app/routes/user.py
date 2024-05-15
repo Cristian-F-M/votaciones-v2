@@ -98,4 +98,43 @@ def user_register():
             mimetype="application/json",
         )
 
-    return Response(json_response({"message": "Registered user" }), status=200, mimetype="application/json")
+    return Response(json_response({"message": "Registered user" }), status=201, mimetype="application/json")
+
+
+
+@bp.route("/user/login", methods=["POST"])
+def user_login():
+    data = request.json
+
+    if not data:
+        return Response(
+            json_response({"message": "Invalid data"}),
+            status=400,
+            mimetype="application/json",
+        )
+    
+    if not all(key in data for key in ["type_document", "document", "password"]):
+        return Response(
+            json_response({"message": "Missing fields"}),
+            status=400,
+            mimetype="application/json",
+        )
+    
+
+    user = User.query.filter_by(type_document=data["type_document"], document=data["document"]).first()
+
+    if not user:
+        return Response(
+            json_response({"message": "User not found"}),
+            status=404,
+            mimetype="application/json",
+        )
+    
+    if not bcrypt.check_password_hash(user.password, data["password"]):
+        return Response(
+            json_response({"message": "Invalid credentials"}),
+            status=401,
+            mimetype="application/json",
+        )
+
+    return Response(json_response({ "user": user.to_dict(), "message": "Logged in"}), status=200, mimetype="application/json")
