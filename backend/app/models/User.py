@@ -17,7 +17,7 @@ class User(db.Model):
 
     Type_document = db.relationship("Type_document")
     Role = db.relationship("Role")
-
+    Session = db.relationship("Session")
 
     def to_dict(self):
         user = {
