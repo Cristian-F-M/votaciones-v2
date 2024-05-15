@@ -12,7 +12,8 @@ def create_app():
     db.init_app(app)
     bcrypt.init_app(app)    
 
-    from app.routes import main
+    from app.routes import main, user
     app.register_blueprint(main.bp)
+    app.register_blueprint(user.bp)
 
     return app
