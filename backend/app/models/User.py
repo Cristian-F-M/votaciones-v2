@@ -15,6 +15,22 @@ class User(db.Model):
     vote = db.Column(db.String(100), db.ForeignKey("candidates.id"))
 
 
-
     Type_document = db.relationship("Type_document")
     Role = db.relationship("Role")
+
+
+    def to_dict(self):
+        user = {
+            "id": self.id,
+            "name": self.name,
+            "lastname": self.lastname,
+            "email": self.email,
+            "type_document": self.type_document,
+            "document": self.document,
+            "phone": self.phone,
+            "role": self.role,
+            "vote": self.vote,
+            "Role": self.Role.to_dict(),
+            "Type_document": self.Type_document.to_dict(),
+        }
+        return user
