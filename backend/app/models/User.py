@@ -12,7 +12,7 @@ class User(db.Model):
     phone = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.VARBINARY(256), nullable=False)
     role = db.Column(db.Integer, db.ForeignKey("roles.id"))
-    vote = db.Column(db.String(100), db.ForeignKey("candidates.id"))
+    vote = db.Column(db.String(100))
 
 
     Type_document = db.relationship("Type_document")
