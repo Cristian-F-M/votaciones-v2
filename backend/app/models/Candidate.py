@@ -10,7 +10,7 @@ class Candidate(db.Model):
     user_id = db.Column(db.String(100), db.ForeignKey("users.id"), nullable=False)
     description = db.Column(db.String(100))
     photo = db.Column(db.String(100))
-
+    User = db.relationship("User")
 
     def to_dict(self):
         candidate = {
