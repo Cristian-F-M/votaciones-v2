@@ -156,11 +156,10 @@ def login():
             mimetype="application/json",
         )
 
-    previous_session = Session.query.filter_by(user_id=user.id).first()
+    previous_session = Session.query.filter_by(id=user.session).first()
     if not previous_session:
         previous_session = Session(
             id=uuid.uuid4(),
-            user_id=user.id,
             token=uuid.uuid4(),
             expiration_date=datetime.now()
             + dt.timedelta(seconds=TIME_EXPIRATION_SESSION),
@@ -171,7 +170,7 @@ def login():
             seconds=TIME_EXPIRATION_SESSION
         )
         previous_session.token = uuid.uuid4()
-
+    user.session = previous_session.id
     db.session.commit()
 
     response = Response(
