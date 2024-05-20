@@ -15,8 +15,9 @@ def create_app():
     Migrate(app, db)
 
 
-    from app.routes import main, user
+    from app.routes import main, user, resources
     app.register_blueprint(main.bp)
     app.register_blueprint(user.bp)
+    app.register_blueprint(resources.bp)
 
     return app
