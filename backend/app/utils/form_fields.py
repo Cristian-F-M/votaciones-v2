@@ -54,5 +54,5 @@ def response_integrity_error(error, sentence, fields):
         for field in fields:
             if field in error:
                 field  = field.split(".")[-1]
-                return {"message": f"{field.capitalize()} already exists"}
-    return {"message": f"An error occurred, please try again later {error}"}
+                return {"field": field, "message": f"{field.capitalize()} already exists"}
+    return { "message": f"An error occurred, please try again later {error}"}
