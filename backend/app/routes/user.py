@@ -22,7 +22,7 @@ from app.utils.http import (
 
 from app.decorators.user import login_required
 
-bp = Blueprint("user", __name__)
+bp = Blueprint("user", __name__, url_prefix="/user")
 
 
 @bp.after_request
@@ -39,7 +39,7 @@ def middlware_after(response):
     return response
 
 
-@bp.route("/user/register", methods=["POST"])
+@bp.route("/register", methods=["POST"])
 def register():
     data = request.json
 
@@ -113,7 +113,7 @@ def register():
     )
 
 
-@bp.route("/user/login", methods=["POST"])
+@bp.route("/login", methods=["POST"])
 def login():
 
     session_id = request.cookies.get("session_id")
@@ -187,7 +187,7 @@ def login():
     return response
 
 
-@bp.route("/user/logout", methods=["POST"])
+@bp.route("/logout", methods=["POST"])
 @login_required
 def logout():
 
