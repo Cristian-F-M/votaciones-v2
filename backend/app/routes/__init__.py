@@ -1,1 +1,1 @@
-from app.routes import main, user
+from app.routes import main, user, resources
