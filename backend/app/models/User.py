@@ -13,6 +13,7 @@ class User(db.Model):
     password = db.Column(db.VARBINARY(256), nullable=False)
     role = db.Column(db.Integer, db.ForeignKey("roles.id"))
     vote = db.Column(db.String(100))
+    session = db.Column(db.String(36), db.ForeignKey("session.id"))
 
 
     Type_document = db.relationship("Type_document")
@@ -32,5 +33,6 @@ class User(db.Model):
             "vote": self.vote,
             "Role": self.Role.to_dict(),
             "Type_document": self.Type_document.to_dict(),
+            "Session": self.Session.to_dict(),
         }
         return user
