@@ -11,6 +11,6 @@ class Session(db.Model):
         session = {
             "id": self.id,
             "token": self.token,
-            "expiration_date": self.expiration_date,
+            "expiration_date": self.expiration_date.isoformat(),
         }
         return session
