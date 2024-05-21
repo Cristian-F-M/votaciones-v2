@@ -1,10 +1,8 @@
 import { LogoSena } from "@/assets/icons/LogoSena";
-import { getApi, postApi } from "@/utils/API";
+import { processApi } from "@/utils/API";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { removeHighlightFields  } from "../utils/formFields"; 
-
-import "@/assets/styles/login.css";
 
 export function Register() {
     const [typesDocument, setTypesDocuments] = useState(null);
