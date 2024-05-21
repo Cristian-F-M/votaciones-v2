@@ -1,16 +1,18 @@
 import { LogoSena } from "@/assets/icons/LogoSena";
-import { processApi } from "@/utils/API";
+import { processApi, METHODS } from "@/utils/API";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { removeHighlightFields  } from "../utils/formFields"; 
+import { removeHighlightFields } from "../utils/formFields";
+import { redirect } from "../utils/API";
 
 export function Register() {
     const [typesDocument, setTypesDocuments] = useState(null);
     useEffect(() => {
         async function getResources() {
-            const typesDocument = await getApi(
-                "http://localhost:8000/resources/types_document"
-            );
+            const typesDocument = await processApi({
+                apiUrl: "http://localhost:8000/resources/types_document",
+                methods: METHODS.GET,
+            });
             setTypesDocuments(typesDocument);
         }
 
@@ -48,28 +50,28 @@ export function Register() {
             return;
         }
 
-        const data = await postApi("http://localhost:8000/user/register", {
-            name,
-            lastname,
-            email,
-            type_document,
-            document,
-            phone,
-            password,
+        const data = await processApi({
+            apiUrl: "http://localhost:8000/user/register",
+            method: METHODS.POST,
+            object: {
+                name,
+                lastname,
+                email,
+                type_document,
+                document,
+                phone,
+                password,
+            },
         });
 
         // TODO -> Change the alert to a toast
 
-        console.log(data);
         if (data) {
-            const { message } = data;
-            // window.location.replace("/login");
-            alert(message);
+            redirect({ to: "/login", message: "Usuario registrado" })
         }
     }
 
-
-    removeHighlightFields()
+    removeHighlightFields();
 
     return (
         <>
