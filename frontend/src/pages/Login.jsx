@@ -30,7 +30,7 @@ export function Login() {
             return;
         }
 
-        const res = await processApi({
+        const user = await processApi({
             apiUrl: "http://localhost:8000/user/login",
             method: METHODS.POST,
             object: {
@@ -39,10 +39,6 @@ export function Login() {
                 password,
             },
         });
-
-        if (res.ok) {
-            console.log(res.data);
-        }
 
         if (user) {
             const { Session: session } = user;
@@ -55,8 +51,8 @@ export function Login() {
                 expiresDate: session.expiration_date,
             });
             redirect({
-                message,
-                url: "/Dashboard",
+                message: "Login exitoso",
+                to: "/Dashboard",
             });
         }
     }
