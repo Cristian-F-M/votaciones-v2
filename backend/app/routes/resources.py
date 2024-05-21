@@ -5,6 +5,7 @@ from app.models.Type_document import Type_document
 
 bp = Blueprint("resources", __name__, url_prefix="/resources")
 
+
 @bp.after_request
 def middlware_after(response):
     origin = request.origin
@@ -19,16 +20,22 @@ def middlware_after(response):
     return response
 
 
+@bp.before_request
+def middlware_before():
+    pass
+
+
 @bp.route("/types_document", methods=["GET"])
 def get_types_document():
 
     types_document = Type_document.query.all()
 
     types_document = [d.to_dict() for d in types_document]
-    print(types_document)
+
+    data = {"status": 200, "ok": True, "data": types_document}
 
     return Response(
-        json_response(types_document),
+        json_response(data),
         status=200,
         mimetype="application/json",
     )
