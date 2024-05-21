@@ -45,7 +45,8 @@ const getCookie = (cookieName) => {
     return value
 }
 
-export function redirect(to){
+export function redirect({ message, to}){
+    alert(message)
     window.location.replace(to)
 }
 
