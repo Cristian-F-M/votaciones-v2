@@ -1,4 +1,4 @@
-import { getApi, loginRequired } from "@/utils/API";
+import { loginRequired } from "@/utils/API";
 
 export function Home() {
 
