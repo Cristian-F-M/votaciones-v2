@@ -119,22 +119,22 @@ def login():
     session_id = request.cookies.get("session_id")
     if session_id:
         return Response(
-            {"message": "Already logged in"}, status=200, mimetype="application/json"
+            json_response({ "ok": True, "status": 200, "message": "Already logged in"}), status=200, mimetype="application/json"
         )
 
     data = request.json
 
     if not data:
         return Response(
-            json_response({"message": "Invalid data"}),
-            status=400,
+            json_response({ "ok": False, "status": 400, "message": "Invalid data"}),
+            status=200,
             mimetype="application/json",
         )
 
     if not all(key in data for key in ["type_document", "document", "password"]):
         return Response(
-            json_response({"message": "Missing fields"}),
-            status=400,
+            json_response({ "ok": False, "status": 400, "message": "Missing fields"}),
+            status=200,
             mimetype="application/json",
         )
 
@@ -144,15 +144,15 @@ def login():
 
     if not user:
         return Response(
-            json_response({"message": "User not found"}),
-            status=404,
+            json_response({ "ok": False, "status": 404, "message": "User not found"}),
+            status=200,
             mimetype="application/json",
         )
 
     if not bcrypt.check_password_hash(user.password, data["password"]):
         return Response(
-            json_response({"message": "Invalid credentials"}),
-            status=401,
+            json_response({ "ok": False, "status": 400, "message": "Invalid credentials"}),
+            status=200,
             mimetype="application/json",
         )
 
@@ -174,7 +174,7 @@ def login():
     db.session.commit()
 
     response = Response(
-        json_response({"user": user.to_dict(), "message": "Logged in"}),
+        json_response({ "ok": True, "status": 100, "data": user.to_dict(), "message": "Logged in"}),
         status=200,
         mimetype="application/json",
     )
