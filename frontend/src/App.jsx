@@ -4,6 +4,8 @@ import { Home } from "@/pages/Home";
 import { Login } from "@/pages/Login";
 import { Register } from "@/pages/Register";
 import { NotFound } from "@/pages/404";
+import { Dashboard } from "@/pages/Dashboard";
+import { Header } from "@/components/Header";
 
 function App() {
     return (
@@ -13,6 +15,7 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/Login" element={<Login />} />
                     <Route path="/Register" element={<Register />} />
+                    <Route path="/Dashboard" element={<Dashboard />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </BrowserRouter>

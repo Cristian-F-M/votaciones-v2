@@ -11,10 +11,15 @@ def login_required(func):
         id = request.cookies.get("id")
         session_token = request.cookies.get("session_token")
 
+        print("#"*100)
+        print(id, session_token)
+        print("#"*100)
+        print(request.cookies)
+
         user = User.query.get(id)
         
-        if user:
-            session = Session.query.filter_by(user_id=user.id).first()
+        if user.session:
+            session = Session.query.filter_by(id=user.session).first()
             if session and session.token == session_token:
                 return func(*args, **kwargs)
 

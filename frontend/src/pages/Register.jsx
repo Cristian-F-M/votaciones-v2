@@ -64,10 +64,9 @@ export function Register() {
             },
         });
 
-        // TODO -> Change the alert to a toast
 
         if (data) {
-            redirect({ to: "/login", message: "Usuario registrado" })
+            redirect({ to: "/login", message: "Usuario registrado correctamente" })
         }
     }
 
