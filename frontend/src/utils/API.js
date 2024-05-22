@@ -8,7 +8,6 @@ export const METHODS = {
 async function getToApi(API_URL){
     return fetch(API_URL, {
         headers: {
-            Cookie: `session_id=${getSessionToken()}; id=${getUser().id}`
         }
     })
     .then(res => res.json())
@@ -48,20 +47,20 @@ const getCookie = (cookieName) => {
     const value = document.cookie.split(';').find(c => {
         c = c.trim()
         return c.startsWith(cookieName)
-    }).trim()
+    })?.trim()
     return value || null
 }
 
-export function redirect({ message, to}){
-    alert(message)
-    window.location.replace(to)
-}
 
-export const loginRequired = () => {
-    const session_token = getSessionToken()
-    if(!session_token){
-        window.location.replace("/login")
+
+export const loginRequired = (message="Debes iniciar sesión para acceder a esta página") => {
+    const sessionToke = getSessionToken()
+    if(!sessionToke){
+        redirect({ to: "/login", message })
+        return 
     }
+    processApi({ apiUrl: `http://localhost:8000/user/validate-token/${sessionToke}`, method: METHODS.GET })
+    redirect({ to: "/Dashboard" })   
 }
 
 export async function processApi({ apiUrl, method, object }){
@@ -74,18 +73,14 @@ export async function processApi({ apiUrl, method, object }){
 }
 
 
-export function setUser({ user, sessionToken, expiresDate }){
-    const expiresDateGMT = isoToGmt(expiresDate)
-    document.cookie = `user=${JSON.stringify(user)}; expires=${expiresDateGMT}; SameSite=Lax`;
-    document.cookie = `session_token=${sessionToken}; expires=${expiresDateGMT}; SameSite=Lax`;
-}
-
-export function redirect({ message, url }){
-    showNotification(message)
-    setTimeout(() => {
-        window.location.replace(url);
-
-    }, 1500)
+export function redirect({ message, to }){
+    if(message) {
+        showNotification(message)
+        setTimeout(() => {
+        }, 1500)    
+    }
+    if(window.location.pathname === to) return
+    window.location.replace(to);
 }
 
 export function showNotification(message){
@@ -109,7 +104,7 @@ export function setUser({ user, sessionToken, expiresDate }){
 }
 
 export function getUser(){
-    const [, user] = getCookie('user').split('=')
+    const [, user] = getCookie('user')?.split('=')
     if(user){
         return JSON.parse(user)
     }
