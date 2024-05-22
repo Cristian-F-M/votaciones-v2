@@ -3,3 +3,4 @@ backend/**/__pycache__/
 backend/Config.py
 backend/api.http
 node_modules
+backend/.env
