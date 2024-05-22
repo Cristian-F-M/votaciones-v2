@@ -24,7 +24,7 @@ def login_required(func):
                 return func(*args, **kwargs)
 
         return Response(
-            json_response({"message": "You need to be logged in to access this page"}),
+            json_response({ "ok": False, "status": 401, "message": "You need to be logged in to access this page"}),
             status=401,
             mimetype="application/json",
         )
