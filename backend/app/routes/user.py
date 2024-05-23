@@ -13,30 +13,13 @@ from app.utils.form_fields import (
     user_fields_validations,
     user_required_fields,
 )
-from app.utils.http import (
-    ACCEPTED_METHODS,
-    ACCEPTED_ORIGINS,
-    TIME_EXPIRATION_SESSION,
-    json_response,
-)
-
+from app.utils.http import TIME_EXPIRATION_SESSION, json_response
 from app.decorators.user import login_required
 
 bp = Blueprint("user", __name__, url_prefix="/user")
 
 
-@bp.after_request
-def middlware_after(response):
-    origin = request.origin
-    method = request.method
 
-    if method in ACCEPTED_METHODS:
-        response.headers["Access-Control-Allow-Methods"] = method
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type"
-
-    if origin in ACCEPTED_ORIGINS or not origin:
-        response.headers["Access-Control-Allow-Origin"] = origin
-    return response
 
 
 @bp.route("/register", methods=["POST"])
@@ -119,21 +102,23 @@ def login():
     session_id = request.cookies.get("session_id")
     if session_id:
         return Response(
-            json_response({ "ok": True, "status": 200, "message": "Already logged in"}), status=200, mimetype="application/json"
+            json_response({"ok": True, "status": 200, "message": "Already logged in"}),
+            status=200,
+            mimetype="application/json",
         )
 
     data = request.json
 
     if not data:
         return Response(
-            json_response({ "ok": False, "status": 400, "message": "Invalid data"}),
+            json_response({"ok": False, "status": 400, "message": "Invalid data"}),
             status=200,
             mimetype="application/json",
         )
 
     if not all(key in data for key in ["type_document", "document", "password"]):
         return Response(
-            json_response({ "ok": False, "status": 400, "message": "Missing fields"}),
+            json_response({"ok": False, "status": 400, "message": "Missing fields"}),
             status=200,
             mimetype="application/json",
         )
@@ -144,14 +129,16 @@ def login():
 
     if not user:
         return Response(
-            json_response({ "ok": False, "status": 404, "message": "User not found"}),
+            json_response({"ok": False, "status": 404, "message": "User not found"}),
             status=200,
             mimetype="application/json",
         )
 
     if not bcrypt.check_password_hash(user.password, data["password"]):
         return Response(
-            json_response({ "ok": False, "status": 400, "message": "Invalid credentials"}),
+            json_response(
+                {"ok": False, "status": 400, "message": "Invalid credentials"}
+            ),
             status=200,
             mimetype="application/json",
         )
@@ -174,7 +161,9 @@ def login():
     db.session.commit()
 
     response = Response(
-        json_response({ "ok": True, "status": 100, "data": user.to_dict(), "message": "Logged in"}),
+        json_response(
+            {"ok": True, "status": 100, "data": user.to_dict(), "message": "Logged in"}
+        ),
         status=200,
         mimetype="application/json",
     )
@@ -209,11 +198,11 @@ def logout():
     return response
 
 
-@bp.route("/test/login-required", methods=["GET"])
+@bp.route("/validate-token", methods=["GET"])
 @login_required
-def test_login_required():
+def validate_token():
     return Response(
-        json_response({"message": "You are logged in"}),
+        json_response({"status": 200, "ok": True, "message": "You are logged in" }),
         status=200,
         mimetype="application/json",
     )
