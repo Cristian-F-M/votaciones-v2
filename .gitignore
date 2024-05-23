@@ -4,3 +4,4 @@ backend/Config.py
 backend/api.http
 node_modules
 backend/.env
+backend/env.py
