@@ -7,23 +7,28 @@ export const METHODS = {
 
 async function getToApi(API_URL){
     return fetch(API_URL, {
+        method: 'GET',
+        credentials: 'include',
         headers: {
-        }
+            'Content-Type': 'application/json',
+        },
     })
     .then(res => res.json())
     .then(data => data)
     .catch(error => {
         // console.log(error) // TODO -> Hacer que se envién los errores a un servidor
-        console.error("Ocurrio un error, intentalo más tarde"); 
+        console.error("Ocurrio un error, intentalo más tarde", error); 
     });
 }
 
 
 async function postToApi(API_URL, object){
+
     return fetch(API_URL, {
         method: 'POST',
+        credentials: 'include',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify(object)
     })
@@ -53,13 +58,15 @@ const getCookie = (cookieName) => {
 
 
 
-export const loginRequired = (message="Debes iniciar sesión para acceder a esta página") => {
-    const sessionToke = getSessionToken()
-    if(!sessionToke){
+export const loginRequired = async (message="Debes iniciar sesión para acceder a esta página") => {
+    const sessionToken = getSessionToken()
+    const res = await processApi({ apiUrl: `http://localhost:8000/user/validate-token`, method: METHODS.GET })
+    console.log(res)
+    if(!sessionToken || res === null){
         redirect({ to: "/login", message })
         return 
     }
-    processApi({ apiUrl: `http://localhost:8000/user/validate-token/${sessionToke}`, method: METHODS.GET })
+    
     redirect({ to: "/Dashboard" })   
 }
 
@@ -104,7 +111,9 @@ export function setUser({ user, sessionToken, expiresDate }){
 }
 
 export function getUser(){
-    const [, user] = getCookie('user')?.split('=')
+    const cookie = getCookie('user')?.split('=')
+    const user = cookie?.[1]
+    
     if(user){
         return JSON.parse(user)
     }
