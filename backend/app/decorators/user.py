@@ -3,28 +3,23 @@ from flask import request, Response
 from app.utils.http import json_response
 from app.models.Session import Session
 from app.models.User import User
-
+import json
 
 def login_required(func):
     @wraps(func)
     def decorator(*args, **kwargs):
-        id = request.cookies.get("id")
+        user = json.loads(request.cookies.get("user"))
         session_token = request.cookies.get("session_token")
 
-        print("#"*100)
-        print(id, session_token)
-        print("#"*100)
-        print(request.cookies)
-
-        user = User.query.get(id)
+        user = User.query.get(user['id'])
         
-        if user.session:
+        if user and user.session:
             session = Session.query.filter_by(id=user.session).first()
             if session and session.token == session_token:
                 return func(*args, **kwargs)
 
         return Response(
-            json_response({ "ok": False, "status": 401, "message": "You need to be logged in to access this page"}),
+            json_response({ "ok": False, "status": 401, "message": "You need to be logged in to access this page" }),
             status=401,
             mimetype="application/json",
         )
