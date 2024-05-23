@@ -1,28 +1,8 @@
-from flask import Blueprint, request, Response
+from flask import Blueprint, Response
 from app.utils.http import json_response
-from app.utils.http import json_response, ACCEPTED_ORIGINS, ACCEPTED_METHODS
 from app.models.Type_document import Type_document
 
 bp = Blueprint("resources", __name__, url_prefix="/resources")
-
-
-@bp.after_request
-def middlware_after(response):
-    origin = request.origin
-    method = request.method
-
-    if method in ACCEPTED_METHODS:
-        response.headers["Access-Control-Allow-Methods"] = method
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type"
-
-    if origin in ACCEPTED_ORIGINS or not origin:
-        response.headers["Access-Control-Allow-Origin"] = origin
-    return response
-
-
-@bp.before_request
-def middlware_before():
-    pass
 
 
 @bp.route("/types_document", methods=["GET"])
