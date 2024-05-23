@@ -43,8 +43,6 @@ export function Login() {
         if (user) {
             const { Session: session } = user;
 
-            console.log(session.expiration_date);
-
             setUser({
                 user,
                 sessionToken: session.token,
